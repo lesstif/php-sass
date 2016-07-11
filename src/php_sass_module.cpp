@@ -6,6 +6,8 @@
 #include "phpsass_version.h"
 #include "php_sass.h"
 
+#include <sass.h>
+
 /**
  *  Namespace to use
  */
@@ -27,6 +29,12 @@ extern "C"
         sass.method<&Lesstif::Sass::compileFile>("compileFile", Php::Final, {});
 
         sass.method<&Lesstif::Sass::version>("version");
+
+        // add style constants
+        sass.add(Php::Constant("STYLE_COMPRESSED", SASS_STYLE_COMPRESSED));
+        sass.add(Php::Constant("STYLE_COMPACT", SASS_STYLE_COMPACT));
+        sass.add(Php::Constant("STYLE_EXPANDED", SASS_STYLE_EXPANDED));
+        sass.add(Php::Constant("STYLE_NESTED", SASS_STYLE_NESTED));
 
         // add the class to the extension
         extension.add(sass);

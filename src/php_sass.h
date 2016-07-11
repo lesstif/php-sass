@@ -2,6 +2,7 @@
 #define PHPSASS_H
 
 #include <phpcpp.h>
+#include <sass.h>
 
 using namespace std;
 
@@ -11,10 +12,13 @@ class Sass : public Php::Base
 {
 private:
     /**
-     *  The initial value
-     *  @var    int
+     *  Sass_Option initial value
+     *  @var    Sass_Options
      */
-    int _value = 0;
+    Sass_Options* options;
+
+    std::vector<std::string> vpluginPath;
+    std::vector<std::string> vincludePath;
 
 public:
     /**

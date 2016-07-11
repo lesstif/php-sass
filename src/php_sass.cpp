@@ -1,8 +1,6 @@
 /**
  *  Libraries used.
  */
-#include <sass.h>
-
 #include "php_sass.h"
 #include "phpsass_version.h"
 
@@ -13,9 +11,44 @@
  */
 using namespace std;
 
+vector<string> &split(const string &s, char delim, vector<string> &elems) {
+    stringstream ss(s);
+    string item;
+    while (getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+    return elems;
+}
+
+
+vector<string> split(const string &s, char delim) {
+    vector<string> elems;
+    split(s, delim, elems);
+    return elems;
+}
+
 Lesstif::Sass::Sass()
 {
+    this->options = sass_make_options();
 
+    // deault options
+    sass_option_set_output_style(this->options, SASS_STYLE_NESTED);
+    sass_option_set_precision(this->options, 5);
+
+    // read in the "sass.plugin path" variable from the php.ini file
+    std::string plugin_path = Php::ini_get("sass.plugin_path");
+
+    this->vpluginPath = split(plugin_path, ',');
+
+    // read in the "variables_order" variable
+    std::string include_path = Php::ini_get("sass.include_path");
+    Php::notice << "sass.include_path:" << include_path << endl;
+
+    this->vincludePath = split(include_path, ',');
+
+    for (std::vector<std::string>::const_iterator i = this->vincludePath.begin(); i != this->vincludePath.end(); ++i) {
+        Php::notice << *i << ' ';
+    }
 }
 
 
@@ -29,37 +62,26 @@ Lesstif::Sass::~Sass()
 /**
  *  compile sass/scss string
  *
- *  @param  Php::Parameters     the given parameters
- *  @return Php::Value
+ *  @param  Php::Parameters     sass/scss string
+ *  @return Php::Value          compiled string
  */
 Php::Value Lesstif::Sass::compile(Php::Parameters &params)
 {
-    /*
-    for (unsigned int i = 0; i < params.size(); i++)
-    {
-        cout << params[i] << endl;
-    }
-    */
-    //size_t size = 1;
-
     std::string source_string = params[0];
     
     char * buffer = new char[source_string.size() + 1];
     std::copy(source_string.begin(), source_string.end(), buffer);
     buffer[source_string.size()] = '\0'; // don't forget the terminating 0
 
-    Php::notice << "input sass string:" << buffer << std::endl << std::flush;
+    //Php::notice << "input sass string:" << buffer << std::endl << std::flush;
 
     Sass_Data_Context* ctx = sass_make_data_context(buffer);
     Sass_Context* ctx_out = sass_data_context_get_context(ctx);
 
     // default option
     Sass_Options* options = sass_make_options();
-    sass_option_set_output_style(options, SASS_STYLE_NESTED);
-    sass_option_set_precision(options, 5);
 
     sass_data_context_set_options(ctx, options);
-    sass_compile_data_context(ctx);
     int status = sass_compile_data_context(ctx);
 
     // Check the context for any errors...
