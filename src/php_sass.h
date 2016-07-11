@@ -26,6 +26,8 @@ public:
     Php::Value compile(Php::Parameters &params);
     Php::Value compileFile(Php::Parameters &params);
 
+    // return php-sass & 3rd party library Version
+    Php::Value version();
 };
 
 } // end of namespace

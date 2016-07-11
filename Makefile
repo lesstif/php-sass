@@ -28,7 +28,7 @@ OBJECTS         = $(SOURCES:%.cpp=%.o)
 all:	${OBJECTS} ${RESULT} ${INFO}
 
 ${RESULT}: ${OBJECTS}
-		${LD} ${LD_FLAGS} -o $@ ${OBJECTS} -lphpcpp
+		${LD} ${LD_FLAGS} -o $@ ${OBJECTS} -lphpcpp -lsass
 
 clean:
 		${RM} *.obj *~* ${OBJECTS} ${RESULT}

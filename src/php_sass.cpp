@@ -4,6 +4,7 @@
 #include <sass.h>
 
 #include "php_sass.h"
+#include "phpsass_version.h"
 
 #define BUFSIZE 4096
 
@@ -12,19 +13,18 @@
  */
 using namespace std;
 
-/*
-Sass::Sass()
+Lesstif::Sass::Sass()
 {
 
 }
 
 
 // destructor
-Sass::~Sass()
+Lesstif::Sass::~Sass()
 {
 
 }
-*/
+
 
 /**
  *  compile sass/scss string
@@ -40,7 +40,6 @@ Php::Value Lesstif::Sass::compile(Php::Parameters &params)
         cout << params[i] << endl;
     }
     */
-    Sass_Data_Context* ctx = NULL;
     //size_t size = 1;
 
     std::string source_string = params[0];
@@ -49,7 +48,9 @@ Php::Value Lesstif::Sass::compile(Php::Parameters &params)
     std::copy(source_string.begin(), source_string.end(), buffer);
     buffer[source_string.size()] = '\0'; // don't forget the terminating 0
 
-    ctx = sass_make_data_context(buffer);
+    Php::notice << "input sass string:" << buffer << std::endl << std::flush;
+
+    Sass_Data_Context* ctx = sass_make_data_context(buffer);
     Sass_Context* ctx_out = sass_data_context_get_context(ctx);
 
     // default option
@@ -76,3 +77,18 @@ Php::Value Lesstif::Sass::compile(Php::Parameters &params)
 
 }
 
+Php::Value Lesstif::Sass::version()
+{
+    std::ostringstream stringStream;
+
+    stringStream << "PHP-Sass Version:" << PHPSASS_VERSION << std::endl;
+    stringStream << "libsass Version:" << libsass_version() << std::endl;
+    stringStream << "sass Version:" << libsass_language_version() << std::endl;
+    stringStream << "sass2scss Version:" << sass2scss_version() << std::endl;
+
+    stringStream << "PHP-CPP Version:" << PHPCPP_API_VERSION << std::endl;
+
+    std::string ver = stringStream.str();
+
+    return ver;
+}

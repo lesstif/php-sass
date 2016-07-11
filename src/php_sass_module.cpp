@@ -4,21 +4,12 @@
 #include <phpcpp.h>
 
 #include "phpsass_version.h"
+#include "php_sass.h"
 
 /**
  *  Namespace to use
  */
 using namespace std;
-
-/**
- *  my_return_value_function()
- *  @return Php::Value
- */
-Php::Value my_return_value_function()
-{
-    return "42";
-}
-
 
 // Symbols are exported according to the "C" language
 extern "C" 
@@ -28,10 +19,18 @@ extern "C"
     {
         // create extension
         static Php::Extension extension("PHP-Sass",PHPSASS_VERSION);
-        
-        // add function to extension
-        extension.add<my_return_value_function>("my_return_value_function");
-        
+
+        Php::Class<Lesstif::Sass> sass("Sass");
+
+        // add methods to it
+        sass.method<&Lesstif::Sass::compile>("compile", Php::Final, {});
+        sass.method<&Lesstif::Sass::compileFile>("compileFile", Php::Final, {});
+
+        sass.method<&Lesstif::Sass::version>("version");
+
+        // add the class to the extension
+        extension.add(sass);
+
         // return the extension module
         return extension.module();
     }

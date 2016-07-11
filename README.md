@@ -39,13 +39,44 @@ sudo apt-get install gcc php7.0-dev
 
 ## installation
 
+### checkout project
+
 ```bash
-git clone 
-cd libsass-php
-git submodule
+git clone https://github.com/lesstif/php-sass
+cd php-sass
+```
+
+### build libsass
+
+```bash
+cd libsass
+git checkout 3.3.6
+BUILD="shared" make
+sudo BUILD="shared" make install
+```
+
+### build PHP-CPP
+
+```bash
+cd ../PHP-CPP
+git checkout v1.5.3
 make
 sudo make install
-```   
+```
+
+### build php-sass
+
+```bash
+cd ../
+make
+sudo make install
+```
+
+### add environment variable
+
+```basg
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+```
 
 # Compatibility
 
