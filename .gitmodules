@@ -1,0 +1,6 @@
+[submodule "libsass"]
+	path = libsass
+	url = https://github.com/sass/libsass
+[submodule "PHP-CPP"]
+	path = PHP-CPP
+	url = https://github.com/CopernicaMarketingSoftware/PHP-CPP
