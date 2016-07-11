@@ -1,6 +1,6 @@
 CPP             = g++
 RM              = rm -f
-CPP_FLAGS       = -Wall -c -I. -O2 -std=c++11
+CPP_FLAGS       = -Wall -c -I. -O2 -std=c++11 -Ilibsass/include
 
 PREFIX			= /usr
 
@@ -11,7 +11,9 @@ LIBRARY_DIR		= $(shell ${PHP_CONFIG} --extension-dir)
 #PHP_CONFIG_DIR	= $(shell php -r "phpinfo();"|grep "additional .ini file"|awk -F"=>" '{print $2}')
 
 ## hard coding
-PHP_CONFIG_DIR	= /etc/php/7.0/cli/conf.d
+PHP_CLI_CONFIG_DIR	= /etc/php/7.0/cli/conf.d
+PHP_FPM_CONFIG_DIR	= /etc/php/7.0/fpm/conf.d
+
 PHP_MODS_AVAILABLE = /etc/php/mods-available
 
 LD              = g++
@@ -41,4 +43,5 @@ ${OBJECTS}:
 install:
 		cp -f ${RESULT} ${LIBRARY_DIR}
 		cp -f src/${PHPINIFILE}	${PHP_MODS_AVAILABLE}
-		ln -sf ${PHP_MODS_AVAILABLE}/${PHPINIFILE} ${PHP_CONFIG_DIR}/30-${PHPINIFILE}
+		ln -sf ${PHP_MODS_AVAILABLE}/${PHPINIFILE} ${PHP_CLI_CONFIG_DIR}/30-${PHPINIFILE}
+		ln -sf ${PHP_MODS_AVAILABLE}/${PHPINIFILE} ${PHP_FPM_CONFIG_DIR}/30-${PHPINIFILE}
