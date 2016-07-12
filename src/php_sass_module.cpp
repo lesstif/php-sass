@@ -25,11 +25,17 @@ extern "C"
         Php::Class<Lesstif::Sass> sass("Sass");
 
         // add methods to it
+
+#ifdef  PHPCPP_15
+        sass.method("compile", &Lesstif::Sass::compile, Php::Final, {});
+        sass.method("compileFile", &Lesstif::Sass::compileFile, Php::Final, {});
+        sass.method("version", &Lesstif::Sass::version);
+#else
         sass.method<&Lesstif::Sass::compile>("compile", Php::Final, {});
         sass.method<&Lesstif::Sass::compileFile>("compileFile", Php::Final, {});
 
         sass.method<&Lesstif::Sass::version>("version");
-
+#endif
         // add style constants
         sass.add(Php::Constant("STYLE_COMPRESSED", SASS_STYLE_COMPRESSED));
         sass.add(Php::Constant("STYLE_COMPACT", SASS_STYLE_COMPACT));

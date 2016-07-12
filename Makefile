@@ -1,20 +1,28 @@
 CPP             = g++
 RM              = rm -f
+
 CPP_FLAGS       = -Wall -c -I. -O2 -std=c++11 -Ilibsass/include
+
+ifeq (${PHPCPP_15},1)
+CPP_FLAGS       += -DPHPCPP_15
+PHP_ETC_DIR     =   /etc/php5
+else
+PHP_ETC_DIR     =   /etc/php/7.0
+endif
 
 PREFIX			= /usr
 
 PHP_CONFIG      = php-config
+
 #Edit these lines to correspond with your own directories
 LIBRARY_DIR		= $(shell ${PHP_CONFIG} --extension-dir)
 
 #PHP_CONFIG_DIR	= $(shell php -r "phpinfo();"|grep "additional .ini file"|awk -F"=>" '{print $2}')
 
-## hard coding
-PHP_CLI_CONFIG_DIR	= /etc/php/7.0/cli/conf.d
-PHP_FPM_CONFIG_DIR	= /etc/php/7.0/fpm/conf.d
+PHP_CLI_CONFIG_DIR	= ${PHP_ETC_DIR}/cli/conf.d
+PHP_FPM_CONFIG_DIR	= ${PHP_ETC_DIR}/fpm/conf.d
 
-PHP_MODS_AVAILABLE = /etc/php/mods-available
+PHP_MODS_AVAILABLE = ${PHP_ETC_DIR}/mods-available
 
 LD              = g++
 LD_FLAGS        = -Wall -shared -O2 

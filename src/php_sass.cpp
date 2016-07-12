@@ -114,3 +114,8 @@ Php::Value Lesstif::Sass::version()
 
     return ver;
 }
+
+Php::Value Lesstif::Sass::compileFile(Php::Parameters &params)
+{
+    return "not implmentated, yet";
+}
