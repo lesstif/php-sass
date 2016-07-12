@@ -7,80 +7,149 @@ libsass-PHP provides a PHP interface to [libsass](https://github.com/sass/libsas
 
 # Usage
 
+[See sass guide.](http://sass-lang.com/guide)
+
+## compile sass string.
+
+### Nesting
+
 ```php
-use Lesstif\Sass;
 
 $sass = new Sass();
 
-$str = <<<SASS
-div { a { color: black}}
-div a {\n  color: black; }\n
+$str = <<<'SASS'
+div { 
+    a { 
+        color: black
+      }
+    }
+div a {  
+    color: black; 
+    }
 SASS;
 
-$sass->compile($str);
+$str = $sass->compile($str);
+var_dump($str);
 ```
 
+### Variables
+
+```php
+
+$str = <<<'STR'
+$font-stack:    Helvetica, sans-serif;
+$primary-color: #333;
+
+body {
+  font: 100% $font-stack;
+  color: $primary-color;
+}
+STR;
+
+$sass = new Sass();
+
+$ret = $sass->compile($str);
+
+var_dump($ret);
+```
 
 # Installation
 
 ## Dependancy
 
-* gcc
-* php7.0 or above
-* php7.0-devel
+* gcc/g++
+* php 5.5 or above
+* php devel package(The package name is different for each distro.)
 * [PHP-CPP](https://github.com/CopernicaMarketingSoftware/PHP-CPP)
 * [libsass](https://github.com/sass/libsass)
 
-### Ubuntu
+### installation Pre-Requisite packages.
+
+#### Ubuntu 16 LTS
 
 ```bash
-sudo apt-get install gcc php7.0-dev
+sudo apt-get install gcc g++ php7.0-dev
+```
+
+#### Ubuntu 14 LTS
+
+```bash
+sudo apt-get install gcc g++ php5-dev
 ```
 
 ## installation
 
-### checkout project
+1. checkout project
 
-```bash
-git clone https://github.com/lesstif/php-sass
-cd php-sass
+    ```bash
+    git clone https://github.com/lesstif/php-sass
+    cd php-sass
+    git submodule init
+    git submodule update
+    ```
+
+1. build libsass
+
+    ```bash
+    cd libsass
+    git checkout 3.3.6
+    BUILD="shared" make
+    sudo BUILD="shared" make install
 ```
 
-### build libsass
+1. build PHP-CPP
+
+    ```bash
+    cd ../PHP-CPP
+    ```
+
+    1. PHP 5.6 or below
+
+    ```bash
+    git checkout v1.5.3
+    make PHPCPP_15=1
+    ```
+    1. PHP 7.0 or above
+
+    ```bash
+    make
+    ```
+
+1. install PHP-CPP library
+
+    ```bash
+    sudo make install
+    ```
+
+1. appending below line to the file '.profile' in your home directory; then log out and log in again.
+
+    ```basg
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+    ```
+
+1. build php-sass module.
+
+    ```bash
+    cd ../
+    make
+    ```
+
+1. install php-sass to PHP modules directory.
+    
+    ```bash
+    sudo make install
+    ```
+
+### check installation
 
 ```bash
-cd libsass
-git checkout 3.3.6
-BUILD="shared" make
-sudo BUILD="shared" make install
-```
-
-### build PHP-CPP
-
-```bash
-cd ../PHP-CPP
-git checkout v1.5.3
-make
-sudo make install
-```
-
-### build php-sass
-
-```bash
-cd ../
-make
-sudo make install
-```
-
-### add environment variable
-
-```basg
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+php -r "phpinfo(INFO_MODULES);"|grep -i sass
 ```
 
 # Compatibility
 
-Tested with PHP 7.0 on ubuntu 16LTS
+* Tested with PHP 7.0 on ubuntu 16LTS
+* Tested with PHP 5.6 on ubuntu 14LTS
 
 
 
