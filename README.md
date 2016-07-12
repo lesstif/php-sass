@@ -1,13 +1,14 @@
 # PHP binding for libsass
 
-Compile .scss and .sass files using PHP.
+You don't have to install ruby/Node.JS stack no more.
+
+You need only to install the PHP and Compile .scss and .sass files using PHP.
 
 [php-sass](https://github.com/lesstif/php-sass) provides a PHP interface to [libsass](https://github.com/sass/libsass), a fairly complete Sass compiler written in C++.
 
 
 # Usage
 
-[See sass guide.](http://sass-lang.com/guide)
 
 ## compile sass string.
 
@@ -75,6 +76,45 @@ $sass->setOutputStyle(Sass::STYLE_COMPRESSED);
 $css = $sass->compileFile($file, 'css-output-dir');
 
 var_dump($css);
+```
+
+## full features example.
+
+```php
+<?php
+
+$file = "input/base.scss";
+
+$sass = new Sass();
+
+//$sass->setVerboseLevel(Sass::VERBOSE_LEVEL_TRACE);
+
+// Emit source map to 'map' dir
+$sass->setSourceMapPath('map');
+
+// STYLE_COMPRESSED, STYLE_COMPACT,STYLE_EXPANDED, STYLE_NESTED
+$sass->setOutputStyle(Sass::STYLE_EXPANDED);
+
+// Emit comments showing original line numbers.
+$sass->setSourceComment(true);
+
+// Omits the source map url comment.
+$sass->setOmitSourceMapUrl(true);
+
+// Set the precision for numbers.
+$sass->setPrecision(5);
+
+// Set Sass import path.
+$sass->setLoadPath('include');
+
+// Set path to autoload plugins.
+$sass->setPluginPath('plugin');
+
+// saved to 'css/base.css' and 'map/base.css.map'
+$css = $sass->compileFile($file, 'css');
+
+var_dump($css);
+
 ```
 
 # Installation
