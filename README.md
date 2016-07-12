@@ -14,6 +14,7 @@ libsass-PHP provides a PHP interface to [libsass](https://github.com/sass/libsas
 ### Nesting
 
 ```php
+<?php
 
 $sass = new Sass();
 
@@ -35,8 +36,11 @@ var_dump($str);
 ### Variables
 
 ```php
+<?php
 
-$str = <<<'STR'
+$sass = new Sass();
+
+$str = <<<'SASS'
 $font-stack:    Helvetica, sans-serif;
 $primary-color: #333;
 
@@ -44,9 +48,7 @@ body {
   font: 100% $font-stack;
   color: $primary-color;
 }
-STR;
-
-$sass = new Sass();
+SASS;
 
 $ret = $sass->compile($str);
 
