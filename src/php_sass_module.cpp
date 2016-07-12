@@ -63,6 +63,11 @@ extern "C"
         sass.method("setPluginPath", &Lesstif::Sass::setPluginPath, Php::Final, {
                 Php::ByVal("pluginPath", Php::Type::String, true),
         });
+
+        // set verbosity level
+        sass.method("setVerboseLevel", &Lesstif::Sass::setVerboseLevel, Php::Final, {
+                Php::ByVal("verboseLevel", Php::Type::Constant, true),
+        });
 #else
         sass.method<&Lesstif::Sass::compile>("compile", Php::Final, {
                 Php::ByVal("sassString", Php::Type::String),
@@ -103,6 +108,11 @@ extern "C"
         sass.method<&Lesstif::Sass::setPluginPath>("setPluginPath", Php::Final, {
                 Php::ByVal("pluginPath", Php::Type::String, true),
         });
+
+        // set verbosity level
+        sass.method<&Lesstif::Sass::setVerboseLevel>("setVerboseLevel", Php::Final, {
+                Php::ByVal("verboseLevel", Php::Type::Constant, true),
+        });
 #endif
         // add style constants
         sass.add(Php::Constant("STYLE_COMPRESSED", SASS_STYLE_COMPRESSED));
@@ -110,6 +120,11 @@ extern "C"
         sass.add(Php::Constant("STYLE_EXPANDED", SASS_STYLE_EXPANDED));
         sass.add(Php::Constant("STYLE_NESTED", SASS_STYLE_NESTED));
 
+        // for debugging
+        sass.add(Php::Constant("VERBOSE_LEVEL_TRACE", VerboseLevel::TRACE));
+        sass.add(Php::Constant("VERBOSE_LEVEL_DEBUG", VerboseLevel::DEBUG));
+        sass.add(Php::Constant("VERBOSE_LEVEL_INFO", VerboseLevel::INFO));
+         
         // add the class to the extension
         extension.add(sass);
 

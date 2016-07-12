@@ -1,10 +1,17 @@
 <?php
 
+$str = <<<'SCSS'
+$font-stack:    Helvetica, sans-serif;
+$primary-color: #333;
 
-$file = "Qq";
+body {
+  font: 100% $font-stack;
+  color: $primary-color;
+}
+SCSS;
 
 $sass = new Sass();
 
-$ret = $sass->compileFile($file);
+$css = $sass->compile($str);
 
-var_dump($ret);
+var_dump($css);

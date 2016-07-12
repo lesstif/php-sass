@@ -30,6 +30,8 @@ vector<string> split(const string &s, char delim) {
 
 Lesstif::Sass::Sass()
 {
+    this->verboseLevel = VerboseLevel::INFO;
+
     this->options = sass_make_options();
 
     // deault options
@@ -39,24 +41,28 @@ Lesstif::Sass::Sass()
     // read in the "sass.plugin path" variable from the php.ini file
     std::string plugin_path = Php::ini_get("sass.plugin_path");
 
+    /*
     vector<string> vPath = split(plugin_path, ',');
     for(vector<string>::iterator it = vPath.begin(); it != vPath.end(); ++it) {
         sass_option_push_plugin_path(this->options, it->c_str());
-    }    
+    } 
+    */   
 
     // read in the "include_path" variable
     std::string include_path = Php::ini_get("sass.include_path");
+
+    /*
     vPath = split(include_path, ',');
     for(vector<string>::iterator it = vPath.begin(); it != vPath.end(); ++it) {
         sass_option_push_include_path(this->options, it->c_str());
-    }    
+    } 
+    */   
 
-    /*
-    Php::notice << "sass.include_path:" << include_path << endl;
-    Php::notice << "sass.plugin_path" << Php::ini_get("sass.plugin_path") << endl;
-    Php::notice << "include_path:" << Php::ini_get("include_path") << endl;
-    Php::notice << "session.save_handler:" << Php::ini_get("session.save_handler") << endl;
-    */
+    if (this->verboseLevel <= VerboseLevel::TRACE)
+    {
+        Php::notice << "sass.plugin_path:"  << plugin_path << endl;
+        Php::notice << "sass.include_path:" << include_path << endl;         
+    }
 }
 
 
@@ -141,7 +147,9 @@ Php::Value Lesstif::Sass::compileFile(Php::Parameters &params)
       outPath = params[1].stringValue();
     }
 
-    //Php::notice << "inputFile :''" << inputFile << "',outPath:'" << outPath << "'" << std::flush;
+    if (this->verboseLevel <= VerboseLevel::TRACE) {
+        Php::notice << __FILE__ << ":" << __LINE__ <<  " inputFile :''" << inputFile << "',outPath:'" << outPath << "'" << std::flush;
+    }
 
     Sass_File_Context* ctx = sass_make_file_context(inputFile.c_str());
     Sass_Context* ctx_out = sass_file_context_get_context(ctx);
@@ -150,12 +158,22 @@ Php::Value Lesstif::Sass::compileFile(Php::Parameters &params)
         sass_option_set_output_path(this->options, outPath.c_str());
 
         // extract filename
-        unsigned int idx = inputFile.rfind('.');
+        unsigned int idx = inputFile.rfind('/');
+
+        // 
+        string tmpFile;
+        if (idx != std::string::npos) {
+            tmpFile = inputFile.substr(idx + 1);
+        } else {
+            tmpFile = inputFile;
+        }
+
+        idx = tmpFile.rfind('.');
 
         if(idx != std::string::npos) {
-            fileName = inputFile.substr(0, idx );
+            fileName = tmpFile.substr(0, idx );
         } else {
-            fileName = inputFile;
+            fileName = tmpFile;
         }
     }
 
@@ -177,11 +195,16 @@ Php::Value Lesstif::Sass::compileFile(Php::Parameters &params)
     // write compiled css into directory
     if (outPath.length() > 0)
     {
+        string finalName = outPath + "/" + fileName + ".css";
         // write file
-        ofstream sassFile(outPath + "/" + fileName + ".css");
+        ofstream sassFile(finalName);
 
         sassFile << outString;
         sassFile.close();
+
+        if (this->verboseLevel <= VerboseLevel::TRACE) {
+            Php::notice << __FILE__ << ":" << __LINE__ <<  " write css to :''" << finalName << std::flush;
+        }
     }
 
     std::string srcMap;
@@ -192,18 +215,22 @@ Php::Value Lesstif::Sass::compileFile(Php::Parameters &params)
         srcMap = tmpStr;
     }
 
-    //Php::notice << "srcMapString: " << srcMap << endl;
+    if (this->verboseLevel <= VerboseLevel::TRACE) {
+        Php::notice << __FILE__ << ":" << __LINE__ << " srcMapString: " << srcMap << endl;
+    }
 
     std::string srcMapString = sass_context_get_source_map_string(ctx_out);
 
-    //Php::notice << "sass_context_get_source_map_string:" << srcMapString << std::flush;
+    if (this->verboseLevel <= VerboseLevel::TRACE) {
+        Php::notice << __FILE__ << ":" << __LINE__ <<  "sass_context_get_source_map_string:" << srcMapString << std::flush;
+    }
 
     std::string outMapfile = sass_option_get_source_map_file(this->options);
 
     if (outMapfile.length() > 0)
     {
         // write file
-        ofstream mapFile(outMapfile + "/" + fileName + ".map");
+        ofstream mapFile(outMapfile + "/" + fileName + + ".css.map");
 
         mapFile << srcMapString;
         mapFile.close();
@@ -249,26 +276,28 @@ void Lesstif::Sass::setPrecision(Php::Parameters &params)
     int val = params[0].numericValue();
 
     sass_option_set_precision(this->options, val);
+
+    // for robust
+    if (sass_option_get_precision(this->options) < 0) { 
+        sass_option_set_precision(this->options, 5);
+    }
 }
 
 void Lesstif::Sass::setLoadPath(Php::Parameters &params)
 {
     string val = params[0].stringValue();
 
-    vector<string> vPath = split(val, ',');
-    for(vector<string>::iterator it = vPath.begin(); it != vPath.end(); ++it) {
-        //Php::notice << "sass_option_push_include_path:" << *it << endl;
-        sass_option_push_include_path(this->options, it->c_str());
-    }    
+    sass_option_push_include_path(this->options, val.c_str());
 }
 
 void Lesstif::Sass::setPluginPath(Php::Parameters &params)
 {
     std::string val = params[0].stringValue();
 
-    vector<string> vPath = split(val, ',');
-    for(vector<string>::iterator it = vPath.begin(); it != vPath.end(); ++it) {
-        //Php::notice << "sass_option_push_plugin_path:" << *it << endl;
-        sass_option_push_plugin_path(this->options, it->c_str());
-    }
+    sass_option_push_plugin_path(this->options, val.c_str());
+}
+
+void Lesstif::Sass::setVerboseLevel(Php::Parameters& params)
+{
+    this->verboseLevel = static_cast<VerboseLevel>(params[0].numericValue());
 }

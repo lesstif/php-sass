@@ -6,6 +6,13 @@
 
 using namespace std;
 
+enum VerboseLevel {
+    TRACE = 1,
+    DEBUG = 2,
+    INFO = 3,
+    ERROR = 4, 
+};
+
 namespace Lesstif
 {
 class Sass : public Php::Base
@@ -16,6 +23,8 @@ private:
      *  @var    Sass_Options
      */
     Sass_Options* options;
+
+    VerboseLevel verboseLevel;
 
 public:
     /**
@@ -39,6 +48,8 @@ public:
     void setPrecision(Php::Parameters &params);
     void setLoadPath(Php::Parameters &params);
     void setPluginPath(Php::Parameters &params);
+
+    void setVerboseLevel(Php::Parameters &params);
 };
 
 } // end of namespace
