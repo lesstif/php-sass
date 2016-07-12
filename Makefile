@@ -45,7 +45,7 @@ info:
 		@echo ${PHP_MODS_AVAILABLE}
 		@echo ${PHP_CONFIG_DIR}
 
-${OBJECTS}: 
+${OBJECTS}: ${SOURCES}
 		${CPP} ${CPP_FLAGS} -fpic -o $@ ${@:%.o=%.cpp}
 
 install:

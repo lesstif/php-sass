@@ -27,14 +27,82 @@ extern "C"
         // add methods to it
 
 #ifdef  PHPCPP_15
-        sass.method("compile", &Lesstif::Sass::compile, Php::Final, {});
-        sass.method("compileFile", &Lesstif::Sass::compileFile, Php::Final, {});
+        sass.method("compile", &Lesstif::Sass::compile, Php::Final, {
+                Php::ByVal("sassString", Php::Type::String, true),
+        });
+        sass.method("compileFile", &Lesstif::Sass::compileFile, Php::Final, {
+                Php::ByVal("sassFile", Php::Type::String, true),
+                Php::ByVal("sassOutFile", Php::Type::String, false),
+        });
         sass.method("version", &Lesstif::Sass::version);
-#else
-        sass.method<&Lesstif::Sass::compile>("compile", Php::Final, {});
-        sass.method<&Lesstif::Sass::compileFile>("compileFile", Php::Final, {});
 
+        sass.method("setSourceMapPath", &Lesstif::Sass::setSourceMapPath, Php::Final, {
+                Php::ByVal("sourceMapPath", Php::Type::String, true),
+        });
+
+        sass.method("setSourceComment", &Lesstif::Sass::setSourceComment, Php::Final, {
+                Php::ByVal("sourceComment", Php::Type::String, true),
+        });
+
+        sass.method("setOutputStyle", &Lesstif::Sass::setOutputStyle, Php::Final, {
+                Php::ByVal("outputStyle", Php::Type::String, true),
+        });
+        
+        sass.method("setOmitSourceMapUrl", &Lesstif::Sass::setOmitSourceMapUrl, Php::Final, {
+                Php::ByVal("omitSourceMapUrl", Php::Type::String, true),
+        });
+
+        sass.method("setPrecision", &Lesstif::Sass::setPrecision, Php::Final, {
+                Php::ByVal("precision", Php::Type::String, true),
+        });
+
+        sass.method("setLoadPath", &Lesstif::Sass::setLoadPath, Php::Final, {
+                Php::ByVal("loadPath", Php::Type::String, true),
+        });
+
+        sass.method("setPluginPath", &Lesstif::Sass::setPluginPath, Php::Final, {
+                Php::ByVal("pluginPath", Php::Type::String, true),
+        });
+#else
+        sass.method<&Lesstif::Sass::compile>("compile", Php::Final, {
+                Php::ByVal("sassString", Php::Type::String),
+        });
+        sass.method<&Lesstif::Sass::compileFile>("compileFile", Php::Final, {
+                Php::ByVal("sassFile", Php::Type::String, true),
+                Php::ByVal("sassOutFile", Php::Type::String, false),
+        });
+        
         sass.method<&Lesstif::Sass::version>("version");
+        
+        sass.method<&Lesstif::Sass::setSourceMapPath>("setSourceMapPath", Php::Final, {
+                Php::ByVal("sourceMapPath", Php::Type::String, true),
+        });
+
+        sass.method<&Lesstif::Sass::setSourceComment>("setSourceComment", Php::Final, {
+                Php::ByVal("sourceComment", Php::Type::Bool, true),
+        });
+
+        sass.method<&Lesstif::Sass::setOutputStyle>("setOutputStyle", Php::Final, {
+                Php::ByVal("outputStyle", Php::Type::Constant, true),
+        });
+
+        sass.method<&Lesstif::Sass::setOmitSourceMapUrl>("setOmitSourceMapUrl", Php::Final, {
+                Php::ByVal("omitSourceMapUrl", Php::Type::Bool, true),
+        });
+        
+        sass.method<&Lesstif::Sass::setPrecision>("setPrecision", Php::Final, {
+                Php::ByVal("precision", Php::Type::Numeric, true),
+        });
+        
+        // Set Sass import path.
+        sass.method<&Lesstif::Sass::setLoadPath>("setLoadPath", Php::Final, {
+                Php::ByVal("loadPath", Php::Type::String, true),
+        });
+
+        // Set path to autoload plugins.
+        sass.method<&Lesstif::Sass::setPluginPath>("setPluginPath", Php::Final, {
+                Php::ByVal("pluginPath", Php::Type::String, true),
+        });
 #endif
         // add style constants
         sass.add(Php::Constant("STYLE_COMPRESSED", SASS_STYLE_COMPRESSED));

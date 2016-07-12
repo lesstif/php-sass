@@ -17,9 +17,6 @@ private:
      */
     Sass_Options* options;
 
-    std::vector<std::string> vpluginPath;
-    std::vector<std::string> vincludePath;
-
 public:
     /**
      *  C++ constructor and destructor
@@ -32,6 +29,16 @@ public:
 
     // return php-sass & 3rd party library Version
     Php::Value version();
+
+    // setter method
+    void setSourceMapPath(Php::Parameters &params);
+    void setSourceComment(Php::Parameters &params);
+
+    void setOutputStyle(Php::Parameters &params);
+    void setOmitSourceMapUrl(Php::Parameters &params);
+    void setPrecision(Php::Parameters &params);
+    void setLoadPath(Php::Parameters &params);
+    void setPluginPath(Php::Parameters &params);
 };
 
 } // end of namespace

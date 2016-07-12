@@ -11,8 +11,6 @@ Compile .scss and .sass files using PHP.
 
 ## compile sass string.
 
-### Nesting
-
 ```php
 <?php
 
@@ -33,26 +31,50 @@ $str = $sass->compile($str);
 var_dump($str);
 ```
 
-### Variables
+## compile sass file and returing string.
 
 ```php
 <?php
 
+$file = 'input.sass';
+
 $sass = new Sass();
 
-$str = <<<'SASS'
-$font-stack:    Helvetica, sans-serif;
-$primary-color: #333;
+$css = $sass->compileFile($file);
 
-body {
-  font: 100% $font-stack;
-  color: $primary-color;
-}
-SASS;
+var_dump($css);
+```
 
-$ret = $sass->compile($str);
+## compile sass file to css file.
 
-var_dump($ret);
+```php
+<?php
+
+$file = 'input.sass';
+
+$sass = new Sass();
+
+// saved 'css-output-dir/input.css'
+$css = $sass->compileFile($file, 'css-output-dir');
+
+var_dump($css);
+```
+
+## set style
+
+```php
+<?php
+
+$file = 'input.sass';
+
+$sass = new Sass();
+
+$sass->setOutputStyle(Sass::STYLE_COMPRESSED);
+
+// saved 'css-output-dir/input.css'
+$css = $sass->compileFile($file, 'css-output-dir');
+
+var_dump($css);
 ```
 
 # Installation
