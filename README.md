@@ -2,7 +2,7 @@
 
 Compile .scss and .sass files using PHP.
 
-libsass-PHP provides a PHP interface to [libsass](https://github.com/sass/libsass), a fairly complete Sass compiler written in C++.
+[php-sass](https://github.com/lesstif/php-sass) provides a PHP interface to [libsass](https://github.com/sass/libsass), a fairly complete Sass compiler written in C++.
 
 
 # Usage
