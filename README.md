@@ -121,7 +121,7 @@ var_dump($css);
 
 ## Dependancy
 
-* gcc/g++
+* gcc/g++ 4.8 or above(libsass requires gcc 4.8)
 * php 5.5 or above
 * php devel package(The package name is different for each distro.)
 * [PHP-CPP](https://github.com/CopernicaMarketingSoftware/PHP-CPP)
@@ -141,15 +141,19 @@ sudo apt-get install gcc g++ php7.0-dev
 sudo apt-get install gcc g++ php5-dev
 ```
 
+#### CentOS 7 with Webtatic package
+
+```bash
+yum install gcc gcc-c++ php70w-cli php70w-devel
+```
+
 ## installation
 
 1. checkout project
 
     ```bash
-    git clone https://github.com/lesstif/php-sass
+    git clone --recurse-submodules https://github.com/lesstif/php-sass
     cd php-sass
-    git submodule init
-    git submodule update
     ```
 
 1. build libsass
@@ -197,6 +201,12 @@ sudo apt-get install gcc g++ php5-dev
     cd ../
     make
     ```
+    
+    if you are using RHEL derived distro, make with custom option.
+
+    ```bash
+    make CENTOS=1
+    ```
 
 1. install php-sass to PHP modules directory.
     
@@ -212,8 +222,10 @@ php -r "phpinfo(INFO_MODULES);"|grep -i sass
 
 # Compatibility
 
-* Tested with PHP 7.0 on ubuntu 16LTS
-* Tested with PHP 5.6 on ubuntu 14LTS
+* Tested with below environments.
+  * PHP 7.0 on ubuntu 16LTS
+  * PHP 5.6 on ubuntu 14LTS
+  * PHP 7.0( [WebTatic Resository](https://webtatic.com/)) on CentOS 7
 
 
 

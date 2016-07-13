@@ -24,6 +24,13 @@ PHP_FPM_CONFIG_DIR	= ${PHP_ETC_DIR}/fpm/conf.d
 
 PHP_MODS_AVAILABLE = ${PHP_ETC_DIR}/mods-available
 
+ifeq (${CENTOS},1)
+PHP_ETC_DIR     =   /etc/php-zts.d
+PHP_CLI_CONFIG_DIR     = ${PHP_ETC_DIR}
+PHP_FPM_CONFIG_DIR     = ${PHP_ETC_DIR}
+PHP_MODS_AVAILABLE = /etc/php.d
+endif
+
 LD              = g++
 LD_FLAGS        = -Wall -shared -O2 
 RESULT          = php-sass.so
