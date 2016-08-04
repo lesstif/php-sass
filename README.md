@@ -232,6 +232,13 @@ brew install gcc6 --enable-cxx
     ```bash
     make CENTOS=1
     ```
+    
+     if you are using Mac OS X, make with MACOS=1 option.
+    
+    ```bash
+    make CPP=g++-6
+    ```
+
 1. install php-sass to PHP modules directory.
     
     ```bash
