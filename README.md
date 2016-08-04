@@ -232,7 +232,6 @@ brew install gcc6 --enable-cxx
     ```bash
     make CENTOS=1
     ```
-
 1. install php-sass to PHP modules directory.
     
     ```bash

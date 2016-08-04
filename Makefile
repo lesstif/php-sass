@@ -1,7 +1,7 @@
 CPP             = g++
 RM              = rm -f
 
-CPP_FLAGS       = -Wall -c -I. -O2 -std=c++11 -Ilibsass/include -IPHP-CPP -undefined dynamic_lookup
+CPP_FLAGS       = -Wall -c -I. -O2 -std=c++11 -Ilibsass/include -IPHP-CPP
 
 ifeq (${PHPCPP_15},1)
 CPP_FLAGS       += -DPHPCPP_15
@@ -18,6 +18,8 @@ PHP_CONFIG      = php-config
 LIBRARY_DIR		= $(shell ${PHP_CONFIG} --extension-dir)
 
 #PHP_CONFIG_DIR	= $(shell php -r "phpinfo();"|grep "additional .ini file"|awk -F"=>" '{print $2}')
+
+UNAME 				:= 	$(shell uname)
 
 PHP_CLI_CONFIG_DIR	= ${PHP_ETC_DIR}/cli/conf.d
 PHP_FPM_CONFIG_DIR	= ${PHP_ETC_DIR}/fpm/conf.d
@@ -36,6 +38,12 @@ LD_FLAGS        = -Wall -shared -O2
 RESULT          = php-sass.so
 
 PHPINIFILE		= php-sass.ini
+
+
+ifeq (${UNAME}, Darwin)
+#CPP_FLAGS       += -undefined dynamic_lookup
+LD_FLAGS     += -undefined dynamic_lookup
+endif
 
 SOURCES			= $(wildcard src/*.cpp)
 OBJECTS         = $(SOURCES:%.cpp=%.o)
