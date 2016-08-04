@@ -1,7 +1,7 @@
 CPP             = g++
 RM              = rm -f
 
-CPP_FLAGS       = -Wall -c -I. -O2 -std=c++11 -Ilibsass/include
+CPP_FLAGS       = -Wall -c -I. -O2 -std=c++11 -Ilibsass/include -IPHP-CPP -undefined dynamic_lookup
 
 ifeq (${PHPCPP_15},1)
 CPP_FLAGS       += -DPHPCPP_15

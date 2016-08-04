@@ -119,7 +119,24 @@ var_dump($css);
 
 # Installation
 
-## Dependancy
+## install from pre-built binary
+
+* download latest pre-built binary
+* extract it
+
+```bash
+tar zxvf php-sass.tar.gz
+```
+
+* run install script as root.
+
+```bash
+sudo ./install.sh
+```
+
+## build from source
+
+### Dependancy
 
 * gcc/g++ 4.8 or above(libsass requires gcc 4.8)
 * php 5.5 or above
@@ -127,27 +144,35 @@ var_dump($css);
 * [PHP-CPP](https://github.com/CopernicaMarketingSoftware/PHP-CPP)
 * [libsass](https://github.com/sass/libsass)
 
-### installation Pre-Requisite packages.
+#### installation Pre-Requisite packages.
 
-#### Ubuntu 16 LTS
+##### Ubuntu 16 LTS
 
 ```bash
 sudo apt-get install gcc g++ php7.0-dev
 ```
 
-#### Ubuntu 14 LTS
+##### Ubuntu 14 LTS
 
 ```bash
 sudo apt-get install gcc g++ php5-dev
 ```
 
-#### CentOS 7 with Webtatic package
+##### CentOS 7 with Webtatic package
 
 ```bash
 yum install gcc gcc-c++ php70w-cli php70w-devel
 ```
 
-## installation
+##### Mac OS X
+
+you need install 
+
+```bash
+brew install gcc6 --enable-cxx
+```
+
+### compile from source
 
 1. checkout project
 
