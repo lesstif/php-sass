@@ -166,7 +166,7 @@ yum install gcc gcc-c++ php70w-cli php70w-devel
 
 ##### Mac OS X
 
-you need install 
+Mac OS X users need install gcc6.
 
 ```bash
 brew install gcc6 --enable-cxx
@@ -183,38 +183,74 @@ brew install gcc6 --enable-cxx
 
 1. build libsass
 
+  1. change directory
     ```bash
     cd libsass
+    ```
+    
+  1. check out stable version. 
+    
+    ```bash
     git checkout 3.3.6
+    ```
+    
+  1. build libsass shared library.
+    
+    ```bash
     BUILD="shared" make
+    ```
+  1. install libsass shared library to /usr/local/lib.
+  
+    ```bash
     sudo BUILD="shared" make install
-```
+    ```
 
 1. build PHP-CPP
-
+  
+  1. change directory
     ```bash
     cd ../PHP-CPP
     ```
 
-    1. PHP 5.6 or below
+  1. Linux User
+  
+    1. build PHP-CPP for PHP 5.6 or below (need v1.5.3 branch)
 
-    ```bash
-    git checkout v1.5.3
-    make PHPCPP_15=1
-    ```
-    1. PHP 7.0 or above
+      ```bash
+      git checkout v1.5.3
+      make PHPCPP_15=1
+      ```
+    
+    1. PHP 7.0 or above users just run make.
 
-    ```bash
-    make
-    ```
+      ```bash
+      make
+      ```
 
-1. install PHP-CPP library
+  1. Mac OS X User 
+     
+     1. open the Makefile and change *-soname* option to *-install_name* .
+       
+     1. add LINKER_FLAGS*-undefined dynamic_lookup*
+     
+        ```bash
+        LINKER_FLAGS = -shared -undefined dynamic_lookup
+        ```
+     
+     1. run make
+        
+        ```bash
+        make CXX=g++-6
+        ```  
+    
+  1. install PHP-CPP library to /usr/local/lib.
 
     ```bash
     sudo make install
     ```
+1. build PHP-CPP (Mac OS X)
 
-1. appending below line to the file '.profile' in your home directory; then log out and log in again.
+1. appending below line to the shell config file(ex: *.profile*, *.bash_profile*) in your home directory; then log out and log in again.
 
     ```basg
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
@@ -222,8 +258,15 @@ brew install gcc6 --enable-cxx
 
 1. build php-sass module.
 
+  1. change directory
+  
     ```bash
     cd ../
+    ```
+    
+  1. build 
+
+     ```bash
     make
     ```
     
@@ -233,10 +276,10 @@ brew install gcc6 --enable-cxx
     make CENTOS=1
     ```
     
-     if you are using Mac OS X, make with MACOS=1 option.
+     if you are using Mac OS X, make with *CXX=g++-6* and *MACOS=1* option.
     
     ```bash
-    make CPP=g++-6
+    make CXX=g++-6
     ```
 
 1. install php-sass to PHP modules directory.
