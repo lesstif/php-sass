@@ -1,7 +1,12 @@
 /**
  *  Libraries used.
  */
+#ifdef _WINDOWS
+#include <phpcpp-win.h>
+#else
 #include <phpcpp.h>
+#endif
+
 
 #include "phpsass_version.h"
 #include "php_sass.h"
@@ -22,6 +27,7 @@ extern "C"
         // create extension
         static Php::Extension extension("PHP-Sass",PHPSASS_VERSION);
 
+        // first param is PHP mapping class name
         Php::Class<Lesstif::Sass> sass("Sass");
 
         // add methods to it
