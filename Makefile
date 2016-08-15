@@ -3,7 +3,7 @@ RM              = rm -f
 
 UNAME 				:= 	$(shell uname)
 
-CXX_FLAGS       = -g -Wall -c -I. -O2 -std=c++11 -Ilibsass/include  -IPHP-CPP
+CXX_FLAGS       = -g -Wall -c -I. -O2 -std=c++11 -Ilibsass/include  -IPHP-CPP -I`php-config --includes`
 
 ifeq (${PHPCPP_15},1)
 CXX_FLAGS       += -DPHPCPP_15

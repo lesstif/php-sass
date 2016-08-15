@@ -208,6 +208,7 @@ brew install gcc6 --enable-cxx
 1. build PHP-CPP
   
   1. change directory
+  
     ```bash
     cd ../PHP-CPP
     ```
@@ -226,33 +227,25 @@ brew install gcc6 --enable-cxx
       ```bash
       make
       ```
+      
+    1. install PHP-CPP library to /usr/local/lib.
+
+      ```bash
+      sudo make install
+      ```
 
   1. Mac OS X User 
-     
-     1. open the Makefile and change *-soname* option to *-install_name* .
-       
-     1. add LINKER_FLAGS*-undefined dynamic_lookup*
-     
-        ```bash
-        LINKER_FLAGS = -shared -undefined dynamic_lookup
-        ```
-     
-     1. run make
+          
+     1. run make with *-f* option.
         
         ```bash
-        make CXX=g++-6
+        make -f ../Makefile-PHPCPP.osx
+        make -f ../Makefile-PHPCPP.osx install
         ```  
-    
-  1. install PHP-CPP library to /usr/local/lib.
-
-    ```bash
-    sudo make install
-    ```
-1. build PHP-CPP (Mac OS X)
-
+  
 1. appending below line to the shell config file(ex: *.profile*, *.bash_profile*) in your home directory; then log out and log in again.
 
-    ```basg
+    ```bash
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
     ```
 
